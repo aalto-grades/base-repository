@@ -2,7 +2,11 @@
 //
 // SPDX-License-Identifier: MIT
 
+import React from 'react';
 import { Routes, Route } from 'react-router-dom';
+import PrivateRoute from './components/auth/PrivateRoute';
+import Login from './components/auth/Login';
+import Signup from './components/auth/Signup';
 import FrontPage from './components/FrontPage';
 import CourseView from './components/CourseView';
 import Link from '@mui/material/Link';
@@ -61,8 +65,12 @@ function App() {
       <AppContainer maxWidth="lg">
         <Box mx={5} my={5}>
           <Routes>
-            <Route path='/' element={<FrontPage/>} />
-            <Route path='/course-view/:courseCode' element={<CourseView/>}/>  {/* Add nested routes when needed */}
+            <Route path='/login' element={<Login/>} />
+            <Route path='/signup' element={<Signup/>} />
+            <Route element={<PrivateRoute/>}>
+              <Route path='/' element={<FrontPage/>} />
+              <Route path='/course-view/:courseCode' element={<CourseView/>}/>  {/* Add nested routes when needed */}
+            </Route>
           </Routes>
         </Box>
       </AppContainer>

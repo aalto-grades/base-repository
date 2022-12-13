@@ -5,6 +5,8 @@
 import { QueryInterface, Transaction } from 'sequelize';
 import fs from 'fs';
 import path from 'path';
+import User from '../models/user';
+import argon2 from 'argon2';
 const users: string = fs.readFileSync(path.resolve(__dirname, '../../../../mockdata/users.sql'), 'utf8');
 const courses: string = fs.readFileSync(path.resolve(__dirname, '../../../../mockdata/courses.sql'), 'utf8');
 const courseInstances: string = fs.readFileSync(path.resolve(__dirname, '../../../../mockdata/course_instances.sql'), 'utf8');
@@ -18,6 +20,12 @@ export default {
       await queryInterface.sequelize.query(courses, { transaction });
       await queryInterface.sequelize.query(courseInstances, { transaction });
       await queryInterface.sequelize.query(courseTranslation, { transaction });
+      await User.create({
+        name: 'aalto',
+		email: 'sysadmin@aalto.fi',
+		password: await argon2.hash('grades'),
+		studentId: '000000',
+      });
       await transaction.commit();
     } catch (error) {
       await transaction.rollback();
